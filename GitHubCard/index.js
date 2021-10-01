@@ -1,11 +1,34 @@
 // commit comment
 
+
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
   
 */
+
+import axios from 'axios';
+
+const cardSection = document.querySelector(".cards");
+const followersArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell" , "BrityHemming", "crharding", "zoelud"];
+
+
+for(let i = 0; i < followersArray.length; i++) {
+
+  axios.get(`https://api.github.com/users/${followersArray[i]}`)
+  .then(resp => {
+    cardSection.appendChild(cardCreator(resp.data));
+  }).catch(err => {
+    console.error(err);
+  });
+
+}
+
+
+
+
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -20,6 +43,8 @@
     and append the returned markup to the DOM as a child of .cards
 */
 
+
+
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -31,7 +56,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -52,6 +77,60 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function cardCreator(gitData) {
+
+  const cardDiv = document.createElement("div");
+  const userImg = document.createElement("img");
+  const infoDiv = document.createElement("div");
+  const nameH3 = document.createElement("h3");
+  const userP = document.createElement("p");
+  const locP = document.createElement("p");
+  const profileP = document.createElement("p");
+  const gitLink = document.createElement("a");
+  const followersP = document.createElement("p");
+  const followingP = document.createElement("p");
+  const bioP = document.createElement("p");
+
+  cardDiv.classList.add("card");
+  infoDiv.classList.add("card-info");
+  nameH3.classList.add("name");
+  userP.classList.add("username");
+
+  userImg.src = gitData.avatar_url;
+  nameH3.textContent = gitData.name;
+  userP.textContent = gitData.login;
+  locP.textContent = "Location: "+ gitData.location;
+  profileP.textContent = "Profile: ";
+  gitLink.href = gitData.html_url;
+  gitLink.textContent = gitData.html_url;
+  
+  followersP.textContent = "Followers: " + gitData.followers;
+  followingP.textContent = "Following: " + gitData.following;
+  bioP.textContent = "Bio: " + gitData.bio;
+
+
+  cardDiv.appendChild(userImg);
+  cardDiv.appendChild(infoDiv);
+  infoDiv.appendChild(nameH3);
+  infoDiv.appendChild(userP);
+  infoDiv.appendChild(locP);
+  infoDiv.appendChild(profileP);
+  profileP.appendChild(gitLink);
+  infoDiv.appendChild(followersP);
+  infoDiv.appendChild(followingP);
+  infoDiv.appendChild(bioP);
+
+  
+
+
+
+
+  return cardDiv;
+}
+
+
+
 
 /*
   List of LS Instructors Github username's:
